@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rentrealm_flutter2/PROVIDERS/profile_provider.dart';
+import 'package:rentrealm_flutter2/PROVIDERS/user_provider.dart';
+import 'package:rentrealm_flutter2/SCREENS/AUTH/login.dart';
+import 'package:rentrealm_flutter2/SCREENS/PROFILE/UPDATE/edit_address_screen.dart';
+import 'package:rentrealm_flutter2/SCREENS/PROFILE/UPDATE/edit_identification_screen.dart';
+import 'package:rentrealm_flutter2/SCREENS/PROFILE/UPDATE/edit_profile_screen.dart';
+import 'package:rentrealm_flutter2/SCREENS/PROFILE/UPDATE/edit_user_screen.dart';
+
+import 'PROVIDERS/auth_provider.dart';
+import 'PROVIDERS/theme_provider.dart';
+import 'SCREENS/AUTH/register.dart';
+import 'SCREENS/get_started.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ],
+      child: Builder(
+        builder: (context) {
+          return MaterialApp(
+            title: 'Rent Realm',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+              useMaterial3: true,
+            ),
+            darkTheme: ThemeData.dark(),
+            themeMode: context.watch<ThemeProvider>().themeMode,
+            home: const GetStartedScreen(),
+            routes: {
+              '/register': (context) => RegisterScreen(),
+              '/login':(context) => LoginScreen(),
+              '/edituser':(context) => EditUserScreen(),
+              '/editprofile':(context) => EditProfileScreen(),
+              '/editaddress': (context) => EditAddressScreen(),
+              '/editidentification': (context) =>EditIdentificationScreen()
+            },
+          );
+        },
+      ),
+    );
+  }
+}
